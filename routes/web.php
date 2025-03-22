@@ -7,3 +7,4 @@ Route::get('/', function () {
     return view('index');
 })->name('inicio');
 
+Route::resource('usuarios', UsuarioController::class);

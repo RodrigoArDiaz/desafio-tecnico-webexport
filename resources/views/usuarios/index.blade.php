@@ -4,7 +4,7 @@
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Usuarios</h1>
-            <a href="#" class="btn btn-success">Crear Nuevo Usuario</a>
+            <a href="{{ route('usuarios.create')}}" class="btn btn-success">Crear Nuevo Usuario</a>
         </div>
         
         <table class="table table-striped">
