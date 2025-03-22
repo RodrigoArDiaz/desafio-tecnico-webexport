@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRolRequest;
 use App\Http\Requests\UpdateRolRequest;
+use App\Models\Permiso;
 use App\Models\Rol;
 use Exception;
-use Illuminate\Http\Request;
 
 class RolController extends Controller
 {
@@ -24,7 +24,8 @@ class RolController extends Controller
      */
     public function create()
     {
-       return view('roles.create');
+       $permisos = Permiso::all();
+       return view('roles.create', ['permisos' => $permisos]);
     }
 
     /**
@@ -33,9 +34,13 @@ class RolController extends Controller
     public function store(StoreRolRequest $request)
     {
         try {
-            Rol::create([
+            $rol= Rol::create([
                 'nombre' => $request->input('nombre'),
             ]);
+
+            $permisosSeleccionados = $request->input('permisos', []);
+
+            $rol->permisos()->attach($permisosSeleccionados);
 
             return redirect()->route('roles.index')->with('success', 'Rol creado exitosamente.');
         } catch (Exception $e) {

@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Permiso;
 use App\Models\Rol;
 use App\Models\Usuario;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -10,6 +11,35 @@ use Tests\TestCase;
 class RolControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+     /**
+     * Verifica que un rol  puede ser creado correctamente.
+     */
+    public function test_store_usuario()
+    {   
+        $permiso = Permiso::factory()->create();
+        $data = [
+            'nombre' => 'Administrador',
+            'permisos' => [$permiso->id]
+        ];
+        $response = $this->post(route('roles.store'), $data);
+
+        // Verifica que el usuario fue creado en la base de datos
+        unset($data['permisos']);
+        $this->assertDatabaseHas('roles', $data);
+
+        // Obtiene el rol recién creado
+        $rol = Rol::where('nombre', 'Administrador')->first();
+
+        // Verifica que el permiso fue asignado al rol en la tabla intermedia
+        $this->assertDatabaseHas('permiso_rol', [
+            'rol_id' => $rol->id,
+            'permiso_id' => $permiso->id,
+        ]);
+
+        // Verifica que la respuesta redirige a la lista de roles
+        $response->assertRedirect(route('roles.index'));
+    }
 
     /**
      * Verifica que el rol pueda ser eliminado correctamente.
