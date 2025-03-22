@@ -22,11 +22,15 @@ class UpdateRolRequest extends FormRequest
      */
     public function rules(): array
     {
+        $rolId = $this->route('rol');
+
         $estados = implode(',', array_map(fn($estado) => $estado->value, EstadoRol::cases()));
 
         return [
-            'nombre' => 'required|string|max:100',
+            'nombre' => 'required|string|max:100|unique:roles,nombre,'.$rolId,
             'estado' => "in:{$estados}",
+            'permisos' => 'required|array', 
+            'permisos.*' => 'integer|exists:permisos,id',
         ];
     }
 }

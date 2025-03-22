@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateRolRequest;
 use App\Models\Permiso;
 use App\Models\Rol;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class RolController extends Controller
 {
@@ -68,8 +69,10 @@ class RolController extends Controller
                 return redirect()->route('roles.index')
                                 ->with('error', 'El rol no existe.');
             }
+            $permisos = Permiso::all();
             return view('roles.create', [
-                'rol' => $rol
+                'rol' => $rol,
+                'permisos' => $permisos
             ]);
         } catch (Exception $e) {
             return redirect()->route('roles.index')
@@ -83,6 +86,8 @@ class RolController extends Controller
     public function update(UpdateRolRequest $request, string $id)
     {
         try {
+            DB::beginTransaction();
+
             $rol = Rol::find($id);
             if (!$rol) {
                 return redirect()->route('roles.index')
@@ -94,9 +99,21 @@ class RolController extends Controller
                 'estado' => $request->filled('estado') ? $request->input('estado') : $rol->estado,
             ]);
 
+            $permisosSeleccionados = $request->input('permisos', []);
+            $permisosRol = $rol->getPermisosIds();
+
+            $permisosParaBorrar = array_diff($permisosRol, $permisosSeleccionados);
+            $permisosParaAgregar = array_diff($permisosSeleccionados, $permisosRol);
+
+            $rol->permisos()->detach($permisosParaBorrar);
+            $rol->permisos()->attach($permisosParaAgregar);
+
+            DB::commit();
+
             return redirect()->route('roles.index')->with('success', 'Rol actualizado exitosamente.');
 
         } catch (Exception $e) {
+            DB::rollBack();
             return redirect()->route('roles.index')
                             ->with('error', 'Ocurrió un error al actualizar el rol.');
         }
