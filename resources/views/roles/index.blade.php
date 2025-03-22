@@ -28,10 +28,10 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($roles as $roles)
+                @foreach ($roles as $rol)
                     <tr>
                         @php
-                            switch ($roles['estado']) {
+                            switch ($rol['estado']) {
                                 case 'alta':
                                     $estadoClass = 'success';
                                     break;
@@ -43,11 +43,11 @@
                                     break;
                             }
                         @endphp
-                        <td class="text-center">  <span class="badge text-bg-{{ $estadoClass }}">{{ strtoupper($roles['estado']) }}</span></td>
-                        <td class="text-center">{{ $roles['nombre'] }}</td>
+                        <td class="text-center">  <span class="badge text-bg-{{ $estadoClass }}">{{ strtoupper($rol['estado']) }}</span></td>
+                        <td class="text-center">{{ $rol['nombre'] }}</td>
                         <td class="text-center">
-                            {{-- <a href="{{ route('usuarios.edit', ['usuario' => $usuario->id])}}" class="btn btn-success btn-sm">Editar</a>
-                            <form action="{{ route('usuarios.destroy', ['usuario' => $usuario->id]) }}" method="POST" style="display: inline;">
+                            <a href="{{ route('roles.edit', ['rol' => $rol->id])}}" class="btn btn-success btn-sm">Editar</a>
+                            {{-- <form action="{{ route('usuarios.destroy', ['usuario' => $usuario->id]) }}" method="POST" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este usuario?')">Eliminar</button>

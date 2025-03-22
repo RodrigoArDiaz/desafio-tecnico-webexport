@@ -10,4 +10,6 @@ Route::get('/', function () {
 
 Route::resource('usuarios', UsuarioController::class);
 
-Route::resource('roles', RolController::class);
+Route::resource('roles', RolController::class)->parameters([
+    'roles' => 'rol', 
+]);
