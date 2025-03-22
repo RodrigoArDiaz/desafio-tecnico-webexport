@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\Genero;
 use App\Http\Requests\StoreUsuarioRequest;
+use App\Http\Requests\UpdateUsuarioRequest;
 use App\Models\Usuario;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -48,12 +49,40 @@ class UsuarioController extends Controller
 
     public function edit(string $id)
     {
-        //
+        $usuario = Usuario::find($id);
+        if (!$usuario) {
+            return redirect()->route('usuarios.index')
+                             ->with('error', 'El usuario no existe.');
+        }
+        $generos = Genero::cases();
+        return view('usuarios.create', [
+            'usuario' => $usuario,
+            'generos' => $generos
+        ]);
     }
 
-    public function update(Request $request, string $id)
+    /**
+     * Actualiza usuario segun su id.
+     */
+    public function update(UpdateUsuarioRequest $request, string $id)
     {
-        //
+        $usuario = Usuario::find($id);
+        if (!$usuario) {
+            return redirect()->route('usuarios.index')
+                             ->with('error', 'El usuario no existe.');
+        }
+
+        $usuario->update([
+            'nombre' => $request->input('nombre'),
+            'apellido' => $request->input('apellido'),
+            'dni' => $request->input('dni'),
+            'mail' => $request->input('mail'),
+            'fecha_de_nacimiento' => $request->input('fecha_de_nacimiento'),
+            'genero' => $request->input('genero'),
+            'contrasenia' => $request->filled('contrasenia') ? $request->input('contrasenia') : $usuario->contrasenia,
+        ]);
+
+        return redirect()->route('usuarios.index')->with('success', 'Usuario actualizado exitosamente.');
     }
 
     public function destroy(string $id)

@@ -65,4 +65,9 @@ class Usuario extends Authenticatable
     {
         return $this->belongsToMany(Rol::class, 'rol_usuario', 'usuario_id', 'rol_id');
     }
+
+    public function getFechaDeNacimientoAttribute($value)
+    {
+        return  Carbon::parse($value)->format('Y-m-d');
+    }
 }

@@ -27,7 +27,7 @@
                         <td>{{ $usuario['mail'] }}</td>
                         <td>{{ $usuario['dni'] }}</td>
                         <td>
-                            <button class="btn btn-primary btn-sm">Editar</button>
+                            <a href="{{ route('usuarios.edit', ['usuario' => $usuario->id])}}" class="btn btn-success btn-sm">Editar</a>
                             <button class="btn btn-danger btn-sm">Eliminar</button>
                         </td>
                     </tr>
