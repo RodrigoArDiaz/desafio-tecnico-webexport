@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRolRequest;
 use App\Models\Rol;
+use Exception;
 use Illuminate\Http\Request;
 
 class RolController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Muestra una lista de todos los roles.
      */
     public function index()
     {
@@ -17,19 +19,28 @@ class RolController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Muestra la vista para crear un nuevo rol.
      */
     public function create()
     {
-        //
+       return view('roles.create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Guarda un nuevo rol.
      */
-    public function store(Request $request)
+    public function store(StoreRolRequest $request)
     {
-        //
+        try {
+            Rol::create([
+                'nombre' => $request->input('nombre'),
+            ]);
+
+            return redirect()->route('roles.index')->with('success', 'Rol creado exitosamente.');
+        } catch (Exception $e) {
+            return redirect()->route('roles.index')
+                            ->with('error', 'Ocurrió un error al crear el usuario.');
+        }
     }
 
     /**

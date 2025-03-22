@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\EstadoRol;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -51,5 +52,9 @@ class Rol extends Model
     public function permisos(): BelongsToMany
     {
         return $this->belongsToMany(Permiso::class, 'permiso_rol', 'rol_id', 'permiso_id');
+    }
+
+    public function getEstadosValidos(){
+        return EstadoRol::cases();
     }
 }
