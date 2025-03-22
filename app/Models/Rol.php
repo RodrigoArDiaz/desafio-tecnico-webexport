@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Rol extends Model
 {
@@ -40,5 +41,10 @@ class Rol extends Model
         static::updating(function ($role) {
             $role->fecha_modificacion = Carbon::now();
         });
+    }
+
+    public function usuarios(): BelongsToMany
+    {
+        return $this->belongsToMany(Usuario::class, 'rol_usuario', 'rol_id', 'usuario_id');
     }
 }

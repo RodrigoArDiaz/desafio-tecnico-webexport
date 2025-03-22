@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Usuario extends Authenticatable
 {
@@ -58,5 +59,10 @@ class Usuario extends Authenticatable
         static::updating(function ($user) {
             $user->fecha_modificacion = Carbon::now();  
         });
+    }
+
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Rol::class, 'rol_usuario', 'usuario_id', 'rol_id');
     }
 }
