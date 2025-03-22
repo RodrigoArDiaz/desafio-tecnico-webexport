@@ -22,7 +22,7 @@ class StoreUsuarioRequest extends FormRequest
      */
     public function rules(): array
     {
-        $generos = implode(', ', array_map(fn($genero) => $genero->value, Genero::cases()));
+        $generos = implode(',', array_map(fn($genero) => $genero->value, Genero::cases()));
         return [
             'nombre' => 'required|string|max:100',
             'apellido' => 'required|string|max:100',
