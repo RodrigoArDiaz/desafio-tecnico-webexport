@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Enums\Genero;
+use App\Models\Rol;
 use App\Models\Usuario;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
@@ -212,7 +213,7 @@ class UsuarioControllerTest extends TestCase
     /**
      * Verifica que el correo debe ser único al actualizar un usuario.
      */
-    public function test_mail_debe_ser_unico_al_actualizar_usuario()
+    public function test_update_usuario_validacion_mail_unico()
     {
         $usuario1 = Usuario::factory()->create(['mail' => 'juan@example.com']);
         $usuario2 = Usuario::factory()->create(['mail' => 'pedro@example.com']);
@@ -229,6 +230,52 @@ class UsuarioControllerTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors('mail');
+    }
+
+
+    /**
+     * Verifica que el usuario pueda ser eliminado correctamente.
+     */
+    public function test_delete_usuario()
+    {
+        $usuario = Usuario::factory()->create();
+
+        $response = $this->delete(route('usuarios.destroy', $usuario->id));
+
+        $response->assertRedirect(route('usuarios.index'));
+
+        // Verificar que el mensaje de éxito está presente en la sesión
+        $response->assertSessionHas('success', 'Usuario eliminado exitosamente.');
+
+        // Verificar que el usuario ya no existe en la base de datos
+        $this->assertDatabaseMissing('usuarios', [
+            'id' => $usuario->id,
+        ]);
+    }
+
+    /** 
+      * Verifica que usuario con roles pueda ser eliminado correctamente
+    */
+    public function test_delete_usuario_con_roles()
+    {
+        $usuario = Usuario::factory()->create();
+
+        $rol1 = Rol::factory()->create();
+        $rol2 = Rol::factory()->create();
+
+        $usuario->roles()->attach([$rol1->id, $rol2->id]);
+
+        $response = $this->delete(route('usuarios.destroy', $usuario->id));
+
+        $response->assertRedirect(route('usuarios.index'));
+
+        // Verificar que el mensaje de éxito está presente en la sesión
+        $response->assertSessionHas('success', 'Usuario eliminado exitosamente.');
+
+        // Verificar que el usuario ya no existe en la base de datos
+        $this->assertDatabaseMissing('usuarios', [
+            'id' => $usuario->id,
+        ]);
     }
 
 }

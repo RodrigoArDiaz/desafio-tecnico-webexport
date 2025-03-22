@@ -6,6 +6,7 @@ use App\Enums\Genero;
 use App\Http\Requests\StoreUsuarioRequest;
 use App\Http\Requests\UpdateUsuarioRequest;
 use App\Models\Usuario;
+use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
@@ -85,8 +86,26 @@ class UsuarioController extends Controller
         return redirect()->route('usuarios.index')->with('success', 'Usuario actualizado exitosamente.');
     }
 
+    /**
+     * Elimina usuario segun su id. 
+     */
     public function destroy(string $id)
     {
-        //
+        try {
+            $usuario = Usuario::find($id);
+            if (!$usuario) {
+                return redirect()->route('usuarios.index')
+                                ->with('error', 'El usuario no existe.');
+            }
+            $usuario->roles()->detach();
+
+            $usuario->delete();
+
+            return redirect()->route('usuarios.index')->with('success', 'Usuario eliminado exitosamente.');
+
+        } catch (Exception $e) {
+            return redirect()->route('usuarios.index')
+                             ->with('error', 'Ocurrió un error al eliminar el usuario.');
+        }
     }
 }

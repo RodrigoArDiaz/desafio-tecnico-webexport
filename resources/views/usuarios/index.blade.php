@@ -6,6 +6,18 @@
             <h1>Usuarios</h1>
             <a href="{{ route('usuarios.create')}}" class="btn btn-success">Crear Nuevo Usuario</a>
         </div>
+
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
         
         <table class="table table-striped">
             <thead>
@@ -28,7 +40,11 @@
                         <td>{{ $usuario['dni'] }}</td>
                         <td>
                             <a href="{{ route('usuarios.edit', ['usuario' => $usuario->id])}}" class="btn btn-success btn-sm">Editar</a>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
+                            <form action="{{ route('usuarios.destroy', ['usuario' => $usuario->id]) }}" method="POST" style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este usuario?')">Eliminar</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
