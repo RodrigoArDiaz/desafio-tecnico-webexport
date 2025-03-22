@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Enums\EstadoUsuario;
 use App\Enums\Genero;
 use App\Models\Rol;
 use App\Models\Usuario;
@@ -230,6 +231,40 @@ class UsuarioControllerTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors('mail');
+    }
+
+    /**
+     * Verifica que se actualize el estado de un usuario correctamente.
+     */
+    public function test_update_usuario_cambiar_estado()
+    {   
+        $datosUsuario = [
+            'nombre' => 'Juan',
+            'apellido' => 'Pérez',
+            'dni' => '12345678',
+            'mail' => 'juan@example.com',
+            'fecha_de_nacimiento' => '1990-01-01',
+            'genero' => Genero::MASCULINO->value,
+            'contrasenia' => '12345678',
+        ];
+
+        $usuario = Usuario::factory()->create($datosUsuario);
+
+        $estado = Arr::random(EstadoUsuario::cases())->value;
+
+        unset($datosUsuario['contrasenia']); //No se modifica contrasenia
+        
+        $datosUsuario['estado'] = $estado;
+
+        $response = $this->put(route('usuarios.update', $usuario->id), $datosUsuario);
+
+        $response->assertRedirect(route('usuarios.index'));
+
+        // Verifica que los datos se actualizaron en la base de datos
+        $this->assertDatabaseHas('usuarios', [
+            'id' => $usuario->id,
+            'estado' => $estado,
+        ]);
     }
 
 

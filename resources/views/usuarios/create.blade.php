@@ -73,6 +73,25 @@
             <input type="password" class="form-control" id="contrasenia_confirmation" name="contrasenia_confirmation" {{ isset($usuario) ? '' : 'required' }}>
         </div>
 
+        @if (isset($usuario))
+            <div class="mb-3">
+                <label for="estado" class="form-label">Cambiar estado</label>
+                <select class="form-control" id="estado" name="estado" required>
+                    <option value="">Seleccione una opción</option>
+                    @foreach($usuario->getEstadosValidos() as $estado)
+                        @php
+                            $valorEstado = $estado->value;
+                            $seleccionado = old('estado', $usuario->estado ?? '') == $valorEstado ? 'selected' : '';
+                        @endphp
+                        <option  value="{{ $estado->value }}"  {{ $seleccionado }} >
+                            {{ strtoupper($estado->value) }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        @endif
+        
+
         <button type="submit" class="btn btn-primary">{{ isset($usuario) ? 'Actualizar Usuario' : 'Crear Usuario' }}</button>
         <a href="{{ route('usuarios.index')}}" class="btn btn-danger">Cancelar</a>
     </form>

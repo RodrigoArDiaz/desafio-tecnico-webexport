@@ -22,23 +22,39 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">Estado</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Apellido</th>
-                    <th scope="col">Mail</th>
-                    <th scope="col">DNI</th>
-                    <th scope="col">Acción</th>
+                    <th scope="col" class="text-center">Estado</th>
+                    <th scope="col" class="text-center">Nombre</th>
+                    <th scope="col" class="text-center">Apellido</th>
+                    <th scope="col" class="text-center">Mail</th>
+                    <th scope="col" class="text-center">DNI</th>
+                    <th scope="col" class="text-center">Acción</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($usuarios as $usuario)
                     <tr>
-                        <td>{{ $usuario['estado'] }}</td>
-                        <td>{{ $usuario['nombre'] }}</td>
-                        <td>{{ $usuario['apellido'] }}</td>
-                        <td>{{ $usuario['mail'] }}</td>
-                        <td>{{ $usuario['dni'] }}</td>
-                        <td>
+                        @php
+                            switch ($usuario['estado']) {
+                                case 'alta':
+                                    $estadoClass = 'success';
+                                    break;
+                                case 'baja':
+                                    $estadoClass = 'danger';
+                                    break;
+                                case 'suspendido':
+                                    $estadoClass = 'warning';
+                                    break;
+                                default:
+                                    $estadoClass = 'secondary';
+                                    break;
+                            }
+                        @endphp
+                        <td class="text-center">  <span class="badge text-bg-{{ $estadoClass }}">{{ strtoupper($usuario['estado']) }}</span></td>
+                        <td class="text-center">{{ $usuario['nombre'] }}</td>
+                        <td class="text-center">{{ $usuario['apellido'] }}</td>
+                        <td class="text-center">{{ $usuario['mail'] }}</td>
+                        <td class="text-center">{{ $usuario['dni'] }}</td>
+                        <td class="text-center">
                             <a href="{{ route('usuarios.edit', ['usuario' => $usuario->id])}}" class="btn btn-success btn-sm">Editar</a>
                             <form action="{{ route('usuarios.destroy', ['usuario' => $usuario->id]) }}" method="POST" style="display: inline;">
                                 @csrf

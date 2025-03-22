@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\EstadoUsuario;
 use App\Enums\Genero;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,6 +26,7 @@ class UpdateUsuarioRequest extends FormRequest
         $usuarioId = $this->route('usuario');
 
         $generos = implode(',', array_map(fn($genero) => $genero->value, Genero::cases()));
+        $estados = implode(',', array_map(fn($estado) => $estado->value, EstadoUsuario::cases()));
 
         return [
             'nombre' => 'required|string|max:100',
@@ -34,6 +36,7 @@ class UpdateUsuarioRequest extends FormRequest
             'fecha_de_nacimiento' => 'required|date|before:today',
             'genero' => "required|in:{$generos}",
             'contrasenia' => 'nullable|min:8|confirmed', 
+            'estado' => "in:{$estados}",
         ];
     }
 }

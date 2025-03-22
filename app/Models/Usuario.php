@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\EstadoUsuario;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -69,5 +70,9 @@ class Usuario extends Authenticatable
     public function getFechaDeNacimientoAttribute($value)
     {
         return  Carbon::parse($value)->format('Y-m-d');
+    }
+
+    public function getEstadosValidos(){
+        return EstadoUsuario::cases();
     }
 }

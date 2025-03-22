@@ -81,6 +81,7 @@ class UsuarioController extends Controller
             'fecha_de_nacimiento' => $request->input('fecha_de_nacimiento'),
             'genero' => $request->input('genero'),
             'contrasenia' => $request->filled('contrasenia') ? $request->input('contrasenia') : $usuario->contrasenia,
+            'estado' => $request->filled('estado') ? $request->input('estado') : $usuario->estado,
         ]);
 
         return redirect()->route('usuarios.index')->with('success', 'Usuario actualizado exitosamente.');
