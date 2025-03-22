@@ -47,11 +47,11 @@
                         <td class="text-center">{{ $rol['nombre'] }}</td>
                         <td class="text-center">
                             <a href="{{ route('roles.edit', ['rol' => $rol->id])}}" class="btn btn-success btn-sm">Editar</a>
-                            {{-- <form action="{{ route('usuarios.destroy', ['usuario' => $usuario->id]) }}" method="POST" style="display: inline;">
+                            <form action="{{ route('roles.destroy', ['rol' => $rol->id]) }}" method="POST" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este usuario?')">Eliminar</button>
-                            </form> --}}
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este rol?')">Eliminar</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach

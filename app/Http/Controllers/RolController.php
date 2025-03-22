@@ -98,10 +98,25 @@ class RolController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un rol segun su id.
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $rol = Rol::find($id);
+            if (!$rol) {
+                return redirect()->route('roles.index')
+                                ->with('error', 'El rol no existe.');
+            }
+            $rol->usuarios()->detach();
+
+            $rol->delete();
+
+            return redirect()->route('roles.index')->with('success', 'Rol eliminado exitosamente.');
+
+        } catch (Exception $e) {
+            return redirect()->route('roles.index')
+                             ->with('error', 'Ocurrió un error al eliminar el rol.');
+        }
     }
 }
