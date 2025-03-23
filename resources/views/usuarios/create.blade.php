@@ -86,13 +86,24 @@
                 <div class="col-6">
                     <div class="mb-3">
                         <label for="contrasenia" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" id="contrasenia" name="contrasenia" {{ isset($usuario) ? '' : 'required' }}>
+                        <div class="input-group mb-3">
+                            <input type="password" class="form-control" id="contrasenia" name="contrasenia" {{ isset($usuario) ? '' : 'required' }}>
+                            <button class="btn btn-outline-secondary" type="button" id="toggleContrasenia">
+                                <i class="bi bi-eye"></i> 
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="mb-3">
-                        <label for="contrasenia_confirmation" class="form-label">Confirmar Contraseña</label>
-                        <input type="password" class="form-control" id="contrasenia_confirmation" name="contrasenia_confirmation" {{ isset($usuario) ? '' : 'required' }}>
+                        <label for="contrasenia_confirmation" class="form-label">Confirmar Nueva Contraseña</label>
+                        <div class="input-group mb-3">
+                            <input type="password" class="form-control" id="contrasenia_confirmation" name="contrasenia_confirmation" {{ isset($usuario) ? '' : 'required' }}>
+                            <button class="btn btn-outline-secondary" type="button" id="toggleContraseniaConfirmar">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div> 
+
                     </div>
                 </div>
             </div>
@@ -126,4 +137,26 @@
         </div>
     </form>
 </div>
+
+
+<script>
+    const addEventTogglePassword = (idButtonToggle, idInput) => {
+        document.getElementById(idButtonToggle).addEventListener('click', function () {
+            const passwordInput = document.getElementById(idInput);
+            const icon = this.querySelector('i');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        });
+    }
+    addEventTogglePassword('toggleContrasenia', 'contrasenia');
+    addEventTogglePassword('toggleContraseniaConfirmar', 'contrasenia_confirmation');
+</script>
 @endsection
