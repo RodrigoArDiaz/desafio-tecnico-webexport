@@ -46,7 +46,7 @@ Sigue estos pasos para configurar el proyecto en tu entorno local:
 
 5. **Ejecutar migraciones y seeders**
 
-   El seeder 'DatosTestSeeder' contine la logica para generar los usuarios de prueba (incluyendo superadministrador) y permisos predefinidos. Revisar el archivo del seeder para mas información.
+   El seeder 'DatosTestSeeder' contiene la logica para generar permisos predefinidos y los usuarios de prueba (incluyendo superadministrador, usuario con privilegios para acceder al CRUD de usuarios y de roles). Revisar el archivo del seeder para mas información.
 
    ```bash
    php artisan migrate
