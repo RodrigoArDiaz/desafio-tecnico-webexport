@@ -55,6 +55,7 @@
                         <td class="text-center">{{ $usuario['mail'] }}</td>
                         <td class="text-center">{{ $usuario['dni'] }}</td>
                         <td class="text-center">
+                            <a href="{{ route('usuarios.edit_roles', ['usuario' => $usuario->id])}}" class="btn btn-secondary btn-sm">Editar Roles</a>
                             <a href="{{ route('usuarios.edit', ['usuario' => $usuario->id])}}" class="btn btn-success btn-sm">Editar</a>
                             <form action="{{ route('usuarios.destroy', ['usuario' => $usuario->id]) }}" method="POST" style="display: inline;">
                                 @csrf

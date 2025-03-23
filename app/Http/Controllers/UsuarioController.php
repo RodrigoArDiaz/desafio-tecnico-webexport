@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Enums\Genero;
 use App\Http\Requests\StoreUsuarioRequest;
+use App\Http\Requests\UpdateRolesUsuarioRequest;
 use App\Http\Requests\UpdateUsuarioRequest;
+use App\Models\Rol;
 use App\Models\Usuario;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UsuarioController extends Controller
 {
@@ -108,5 +111,63 @@ class UsuarioController extends Controller
             return redirect()->route('usuarios.index')
                              ->with('error', 'Ocurrió un error al eliminar el usuario.');
         }
+    }
+
+    /**
+     * Agregar role/s a usuario segun su id. 
+     */
+    public function editRoles(string $id){
+        try{
+            $usuario = Usuario::find($id);
+            if (!$usuario) {
+                return redirect()->route('usuarios.index')
+                                ->with('error', 'El usuario no existe.');
+            }
+            $roles = Rol::all();
+            return view('usuarios.roles', [
+                'usuario' => $usuario,
+                'roles' => $roles
+            ]);
+        } catch (Exception $e) {
+            return redirect()->route('usuarios.index')
+                            ->with('error', 'Ocurrió un error al eliminar el usuario.');
+        }
+    }
+
+    /**
+     * Agregar role/s a usuario segun su id. 
+     */
+    public function updateRoles(UpdateRolesUsuarioRequest $request, string $id){
+        try {
+            DB::beginTransaction();
+
+            $usuario = Usuario::find($id);
+            if (!$usuario) {
+                return redirect()->route('usuarios.index')
+                                ->with('error', 'El usuario no existe.');
+            }
+
+            $rolesSeleccionados = $request->input('roles', []);
+            
+            if(count($rolesSeleccionados) > 0){
+                $rolesDelUsuario = $usuario->getRolesIds();
+
+                $rolesParaBorrar = array_diff($rolesDelUsuario, $rolesSeleccionados);
+                $rolesParaAgregar = array_diff($rolesSeleccionados, $rolesDelUsuario);
+
+                $usuario->roles()->detach($rolesParaBorrar);
+                $usuario->roles()->attach($rolesParaAgregar);
+            }
+            
+            DB::commit();
+
+            return redirect()->route('usuarios.index')->with('success', 'Roles asignados a usuario exitosamente.');
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            return redirect()->route('usuarios.index')
+                            ->with('error', 'Ocurrió un error al actualizar el rol.');
+        }
+    
     }
 }

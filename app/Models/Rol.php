@@ -61,4 +61,8 @@ class Rol extends Model
     public function getPermisosIds() {
         return $this->permisos->pluck('id')->toArray(); 
     }
+
+    public function getPermisosNombres() {
+        return $this->permisos->pluck('nombre')->toArray(); 
+    }
 }

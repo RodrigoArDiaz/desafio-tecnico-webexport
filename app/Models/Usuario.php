@@ -75,4 +75,8 @@ class Usuario extends Authenticatable
     public function getEstadosValidos(){
         return EstadoUsuario::cases();
     }
+
+    public function getRolesIds() {
+        return $this->roles->pluck('id')->toArray(); 
+    }
 }
