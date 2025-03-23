@@ -79,16 +79,24 @@ class UsuarioController extends Controller
                              ->with('error', 'El usuario no existe.');
         }
 
-        $usuario->update([
+        $datosUsuario = [
             'nombre' => $request->input('nombre'),
             'apellido' => $request->input('apellido'),
             'dni' => $request->input('dni'),
             'mail' => $request->input('mail'),
             'fecha_de_nacimiento' => $request->input('fecha_de_nacimiento'),
             'genero' => $request->input('genero'),
-            'contrasenia' => $request->filled('contrasenia') ? $request->input('contrasenia') : $usuario->contrasenia,
-            'estado' => $request->filled('estado') ? $request->input('estado') : $usuario->estado,
-        ]);
+        ];
+
+        if ($request->filled('contrasenia')) {
+            $datosUsuario['contrasenia'] = $request->input('contrasenia');
+        }
+
+        if ($request->filled('estado')) {
+            $datosUsuario['estado'] = $request->input('estado');
+        }
+
+        $usuario->update($datosUsuario);
 
         return redirect()->route('usuarios.index')->with('success', 'Usuario actualizado exitosamente.');
     }
