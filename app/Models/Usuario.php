@@ -79,4 +79,9 @@ class Usuario extends Authenticatable
     public function getRolesIds() {
         return $this->roles->pluck('id')->toArray(); 
     }
+
+    public function getAuthPassword()
+    {
+        return $this->contrasenia; 
+    }
 }
