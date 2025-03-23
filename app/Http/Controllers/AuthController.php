@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\EstadoUsuario;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +24,15 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         if (Auth::attempt(['mail' => $request->input('mail'), 'password' => $request->input('contrasenia')])) {
+            // Verfica que estado de usuario sea 'alta'
+            $usuario = Usuario::where('mail', $request->input('mail'))->first();
+
+            if ($usuario  && $usuario->estado !== EstadoUsuario::ALTA->value) {
+                return back()->withErrors([
+                    'mail' => 'El usuario se encuentra dado de baja o suspendido.',
+                ]);
+            }
+
             // Autenticación exitosa
             return redirect()->intended('/'); // Redirigir al dashboard
         }
