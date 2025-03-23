@@ -131,6 +131,7 @@ class RolController extends Controller
                                 ->with('error', 'El rol no existe.');
             }
             $rol->usuarios()->detach();
+            $rol->permisos()->detach();
 
             $rol->delete();
 
