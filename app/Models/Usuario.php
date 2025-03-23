@@ -90,4 +90,16 @@ class Usuario extends Authenticatable
     public function esSuperAdministrador(){
         return $this->es_super_administrador == EsSuperAdministrador::SI->value;
     }
+
+    public function tienePermiso(string $nombrePermiso): bool{
+        $this->load('roles.permisos');
+
+        foreach ($this->roles as $rol) {
+            if ($rol->permisos->contains('nombre', $nombrePermiso)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
