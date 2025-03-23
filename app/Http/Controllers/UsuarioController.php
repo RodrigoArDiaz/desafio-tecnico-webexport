@@ -146,18 +146,15 @@ class UsuarioController extends Controller
                 return redirect()->route('usuarios.index')
                                 ->with('error', 'El usuario no existe.');
             }
-
             $rolesSeleccionados = $request->input('roles', []);
+
+            $rolesDelUsuario = $usuario->getRolesIds();
+            $rolesParaBorrar = array_diff($rolesDelUsuario, $rolesSeleccionados);
+            $rolesParaAgregar = array_diff($rolesSeleccionados, $rolesDelUsuario);
             
-            if(count($rolesSeleccionados) > 0){
-                $rolesDelUsuario = $usuario->getRolesIds();
-
-                $rolesParaBorrar = array_diff($rolesDelUsuario, $rolesSeleccionados);
-                $rolesParaAgregar = array_diff($rolesSeleccionados, $rolesDelUsuario);
-
-                $usuario->roles()->detach($rolesParaBorrar);
-                $usuario->roles()->attach($rolesParaAgregar);
-            }
+            $usuario->roles()->detach($rolesParaBorrar);
+            $usuario->roles()->attach($rolesParaAgregar);
+        
             
             DB::commit();
 
