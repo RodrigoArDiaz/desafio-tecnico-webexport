@@ -112,10 +112,16 @@ class UsuarioController extends Controller
                 return redirect()->route('usuarios.index')
                                 ->with('error', 'El usuario no existe.');
             }
+
+            if ($usuario->esSuperAdministrador()) {
+                return redirect()->route('usuarios.index')
+                                ->with('error', 'El usuario no se puede eliminar: es superadministrador.');
+            }
+            
             $usuario->roles()->detach();
 
             $usuario->delete();
-
+  
             return redirect()->route('usuarios.index')->with('success', 'Usuario eliminado exitosamente.');
 
         } catch (Exception $e) {
