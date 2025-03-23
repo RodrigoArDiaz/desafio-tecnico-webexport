@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\EstadoUsuario;
 use App\Enums\Genero;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -24,8 +25,8 @@ class UsuarioFactory extends Factory
             'mail' => $this->faker->unique()->safeEmail,
             'fecha_de_nacimiento' => $this->faker->date('Y-m-d', '2005-01-01'),
             'genero' => $this->faker->randomElement(Genero::cases()),
-            'contrasenia' => 'password123',
-            'estado' => $this->faker->randomElement(['alta', 'baja', 'suspendido']),
+            'contrasenia' => 'usuario@1234',
+            'estado' => $this->faker->randomElement(EstadoUsuario::cases()),
         ];
     }
 }
