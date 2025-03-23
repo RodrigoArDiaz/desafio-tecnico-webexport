@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Middleware\EsSuperAdmin;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,15 +22,18 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
     Route::get('/inicio', [UsuarioController::class, 'perfil'])->name('inicio');
 
-    Route::resource('usuarios', UsuarioController::class);
+    Route::middleware(EsSuperAdmin::class)->group(function () {
 
-    Route::get('usuarios/{usuario}/roles', [UsuarioController::class, 'editRoles'])
-        ->name('usuarios.edit_roles');
+        Route::resource('usuarios', UsuarioController::class);
 
-    Route::post('usuarios/{usuario}/roles', [UsuarioController::class, 'updateRoles'])
-        ->name('usuarios.update_roles');
+        Route::get('usuarios/{usuario}/roles', [UsuarioController::class, 'editRoles'])
+            ->name('usuarios.edit_roles');
 
-    Route::resource('roles', RolController::class)->parameters([
-        'roles' => 'rol', 
-    ]);
+        Route::post('usuarios/{usuario}/roles', [UsuarioController::class, 'updateRoles'])
+            ->name('usuarios.update_roles');
+
+        Route::resource('roles', RolController::class)->parameters([
+            'roles' => 'rol', 
+        ]);
+    });
 });

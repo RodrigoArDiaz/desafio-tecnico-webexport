@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\EsSuperAdministrador;
 use App\Enums\EstadoUsuario;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -34,6 +35,7 @@ class Usuario extends Authenticatable
 
     protected $hidden = [
         'contrasenia', 
+        'es_super_administrador', 
     ];
 
     protected $casts = [
@@ -83,5 +85,9 @@ class Usuario extends Authenticatable
     public function getAuthPassword()
     {
         return $this->contrasenia; 
+    }
+
+    public function esSuperAdministrador(){
+        return $this->es_super_administrador == EsSuperAdministrador::SI->value;
     }
 }

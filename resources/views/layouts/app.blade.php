@@ -20,7 +20,16 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav  ms-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                <ul class="navbar-nav  ms-auto my-2 my-lg-0 navbar-nav-scroll" >
+                    @if ( Auth::user()->esSuperAdministrador())
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('usuarios.index') }}">CRUD Usuarios</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('roles.index') }}">CRUD Roles</a>
+                        </li>
+                    @endif
+
                     <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         {{ Auth::user()->nombre }}
