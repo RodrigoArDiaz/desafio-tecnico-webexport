@@ -36,4 +36,16 @@ Route::middleware('auth')->group(function () {
             'roles' => 'rol', 
         ]);
     });
+
+    //Rutas para comprobar permisos 
+    Route::get('/cursos', function() {
+        return view('ejemplo-recursos.cursos');
+    })->middleware('can:ver_cursos')
+      ->name('cursos');
+
+    Route::get('/productos', function() {
+        return view('ejemplo-recursos.productos');
+    })->middleware('can:ver_productos')
+      ->name('productos');
+
 });

@@ -21,6 +21,20 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav  ms-auto my-2 my-lg-0 navbar-nav-scroll" >
+                    {{-- Rutas para comprobacion de permisos --}}
+                    @can('ver_productos')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('productos') }}">Productos</a>
+                        </li>
+                    @endcan
+
+                    @can('ver_cursos')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('cursos') }}">Cursos</a>
+                        </li>
+                    @endcan
+
+
                     @if ( Auth::user()->esSuperAdministrador())
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('usuarios.index') }}">CRUD Usuarios</a>

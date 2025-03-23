@@ -5,6 +5,11 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Permiso;
 
+/**
+ * Creacion de permisos predefinidos.
+ * Ejecutar para test de acceso a acciones
+ * a recursos de ejemplo  'cursos' y 'productos'
+ */
 class PermisoPredefinidoSeeder extends Seeder
 {
     /**
