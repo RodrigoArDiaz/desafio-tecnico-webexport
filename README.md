@@ -32,17 +32,17 @@ Sigue estos pasos para configurar el proyecto en tu entorno local:
    DB_USERNAME=tu_usuario_mysql
    DB_PASSWORD=tu_contraseña_mysql
 
+   SESSION_DRIVER=file
 
-3. **Generar la clave de aplicación**
-
-   ```bash
-   php artisan key:generate
-
-4. **Instalar dependencias de Composer**
+3. **Instalar dependencias de Composer**
 
    ```bash
    composer install
 
+4. **Generar la clave de aplicación**
+
+   ```bash
+   php artisan key:generate
 
 5. **Ejecutar migraciones y seeders**
 
