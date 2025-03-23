@@ -89,6 +89,7 @@
             @if (count($roles) == 0)
               <div class="alert alert-danger" role="alert">
                 No hay roles disponibles
+                <a href="{{ route('roles.create')}}" class="btn btn-success btn-sm  float-end">Crear Nuevo Rol</a>
               </div>
             @endif
         </div>
