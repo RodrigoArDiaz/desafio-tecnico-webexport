@@ -20,12 +20,7 @@ Sigue estos pasos para configurar el proyecto en tu entorno local:
    
    cd desafio-tecnico-webexport
 
-2. **Instalar dependencias de Composer**
-
-   ```bash
-   composer install
-
-3. **Configurar el archivo .env**
+2. **Configurar el archivo .env**
 
    Copia el archivo .env.example y renómbralo a .env. Luego, configura las variables de entorno necesarias, especialmente las relacionadas con la base de datos:
 
@@ -38,10 +33,15 @@ Sigue estos pasos para configurar el proyecto en tu entorno local:
    DB_PASSWORD=tu_contraseña_mysql
 
 
-4. **Generar la clave de aplicación**
+3. **Generar la clave de aplicación**
 
    ```bash
    php artisan key:generate
+
+4. **Instalar dependencias de Composer**
+
+   ```bash
+   composer install
 
 
 5. **Ejecutar migraciones y seeders**
