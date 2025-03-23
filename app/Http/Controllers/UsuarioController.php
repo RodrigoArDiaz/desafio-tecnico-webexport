@@ -170,4 +170,9 @@ class UsuarioController extends Controller
         }
     
     }
+
+    public function perfil() : View
+    {
+        return view('usuarios.profile');
+    }
 }

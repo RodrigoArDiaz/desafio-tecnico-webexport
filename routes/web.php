@@ -6,23 +6,30 @@ use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('index');
-})->name('inicio');
-
+    if (auth()->check()) {
+        return redirect()->route('inicio'); // Usuario autenticado
+    } else {
+        return redirect()->route('login'); // Usuario no autenticado
+    }
+});
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
-Route::resource('usuarios', UsuarioController::class);
+Route::middleware('auth')->group(function () {
+    Route::get('/inicio', [UsuarioController::class, 'perfil'])->name('inicio');
 
-Route::get('usuarios/{usuario}/roles', [UsuarioController::class, 'editRoles'])
-    ->name('usuarios.edit_roles');
+    Route::resource('usuarios', UsuarioController::class);
 
-Route::post('usuarios/{usuario}/roles', [UsuarioController::class, 'updateRoles'])
-    ->name('usuarios.update_roles');
+    Route::get('usuarios/{usuario}/roles', [UsuarioController::class, 'editRoles'])
+        ->name('usuarios.edit_roles');
 
-Route::resource('roles', RolController::class)->parameters([
-    'roles' => 'rol', 
-]);
+    Route::post('usuarios/{usuario}/roles', [UsuarioController::class, 'updateRoles'])
+        ->name('usuarios.update_roles');
+
+    Route::resource('roles', RolController::class)->parameters([
+        'roles' => 'rol', 
+    ]);
+});

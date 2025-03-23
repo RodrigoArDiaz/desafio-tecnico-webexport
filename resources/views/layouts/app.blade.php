@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    {{-- @auth --}}
+    @auth
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-body px-2" data-bs-theme="dark">
             <a class="navbar-brand" href="{{ route('inicio')}}">App</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,18 +23,16 @@
                     {{-- <li class="nav-item">
                         <a class="nav-link" href="{{ route('usuarios.create') }}">CRUD Usuarios</a>
                     </li> --}}
-                     @auth
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Cerrar Sesión</a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
                     </li>
-                    @endauth 
                 </ul>
             </div>
         </nav>
-    {{-- @endauth --}}
+    @endauth
 
     {{-- Contenedor central --}}
     <div class="container mt-4 mb-4">
