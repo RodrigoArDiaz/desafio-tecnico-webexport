@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Enums\Genero;
 use App\Http\Requests\StoreUsuarioRequest;
+use App\Http\Requests\UpdateContraseniaRequest;
 use App\Http\Requests\UpdateRolesUsuarioRequest;
 use App\Http\Requests\UpdateUsuarioRequest;
 use App\Models\Rol;
 use App\Models\Usuario;
+use Illuminate\Support\Facades\Auth;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
@@ -171,5 +174,42 @@ class UsuarioController extends Controller
     public function perfil() : View
     {
         return view('usuarios.profile');
+    }
+
+    /**
+     * Muestra el formulario para cambiar la contraseña del usuario autenticado.
+     */
+    public function showCambiarContrasenia(){
+        return view('usuarios.cambiarcontrasenia');
+    }
+
+    /**
+     * Permite que el usuario autenticado pueda cambiar su contraseña
+     */
+    public function updateContrasenia(UpdateContraseniaRequest $request, string $id)
+    {
+        try{
+            $usuario = Usuario::find($id);
+            if (!$usuario) {
+                return redirect()->route('perfil')
+                                ->with('error', 'El usuario no existe.');
+            }
+
+            if (Auth::user()->id != $usuario->id) {
+                return redirect()->route('perfil')
+                                ->with('error', 'No esta autorizado a realizar esta accion.');
+            }
+
+            $usuario->update([
+                'contrasenia' => $request->input('contrasenia'),
+            ]);
+
+            return redirect()->route('perfil')->with('success', 'Contraseña actualizada correctamente.');
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            return redirect()->route('perfil')
+                            ->with('error', 'Ocurrió un error al actualizar  la contraseña.');
+        }
     }
 }

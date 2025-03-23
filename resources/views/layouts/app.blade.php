@@ -46,7 +46,10 @@
 
                     <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ Auth::user()->nombre }}
+                        {{ Auth::user()->nombre }} 
+                        @if (Auth::user()->esSuperAdministrador())
+                            (superadministrador)
+                        @endif
                       </a>
                       <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="#">Perfil</a></li>

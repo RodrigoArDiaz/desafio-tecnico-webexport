@@ -37,6 +37,11 @@ Route::middleware('auth')->group(function () {
         ]);
     });
 
+    Route::get('/perfil', [UsuarioController::class, 'perfil'])->name('perfil');
+    Route::get('perfil/{usuario}/cambiar-contrasenia', [UsuarioController::class, 'showCambiarContrasenia'])->name('cambiar-contrasenia');
+    Route::put('perfil/{usuario}/cambiar-contrasenia', [UsuarioController::class, 'updateContrasenia'])->name('confirmar-cambiar-contrasenia');
+    
+
     //Rutas para comprobar permisos 
     Route::get('/cursos', function() {
         return view('ejemplo-recursos.cursos');
